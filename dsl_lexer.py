@@ -71,17 +71,6 @@ TOKEN_TYPE_MAP = {
 }
 
 def tokenize(code: str):
-    """
-    Convert source code into a list of Token(type, value, line, column).
-
-    Token types are chosen to align directly with the grammar terminals:
-      keywords -> 'agent', 'task', 'if', ...
-      identifiers -> 'id'
-      integers -> 'num'
-      strings -> 'str'
-      punctuation/operators -> literal terminal strings like '(', '==', '->'
-      EOF -> '$'
-    """
     tokens = []
     line_num = 1
     line_start = 0
