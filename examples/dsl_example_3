@@ -1,0 +1,14 @@
+agent A {
+    tool llm
+    task check(string text) -> string result {
+        action: llm("check")
+    }
+}
+
+system {
+    string x = "hello"
+    string y = run A.check(x)
+    if y == "ok" and x == "hello" {
+        y = "accepted"
+    }
+}
