@@ -4,27 +4,9 @@ from collections import namedtuple
 
 Token = namedtuple("Token", ["type", "value", "line", "column"])
 
-KEYWORDS = {
-    "agent",
-    "tool",
-    "task",
-    "action",
-    "system",
-    "if",
-    "for",
-    "in",
-    "run",
-    "string",
-    "int",
-    "bool",
-    "list",
-    "true",
-    "false",
-    "and",
-    "or",
-}
-
 TOKEN_SPECIFICATION = [
+    ("KEYWORD", r"\b(agent|tool|task|action|system|if|for|in|run|string|int|bool|list|true|false|and|or)\b"),
+    
     ("WHITESPACE", r"[ \t\r\n]+"),
 
     ("ARROW", r"->"),
@@ -125,10 +107,13 @@ def tokenize(code: str):
             raise SyntaxError(
                 f"Unexpected character {value!r} at line {line_num}, column {column}"
             )
-
+    
+        if kind == "KEYWORD":
+            tokens.append(Token(value, value, line_num, column))
+            continue
+    
         if kind == "ID":
-            token_type = value if value in KEYWORDS else "id"
-            tokens.append(Token(token_type, value, line_num, column))
+            tokens.append(Token("id", value, line_num, column))
             continue
 
         token_type = TOKEN_TYPE_MAP[kind]
