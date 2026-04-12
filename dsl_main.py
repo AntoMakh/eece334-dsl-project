@@ -1,0 +1,40 @@
+from dsl_lexer import tokenize
+from dsl_ll1_parser import LL1Parser
+
+code = """
+agent Researcher {
+    tool web_search
+    tool llm
+    task gather(string topic) -> string data {
+        action: web_search(topic)
+        action: llm("summarize results")
+    }
+}
+agent Analyzer {
+    tool llm
+    task sentiment(string text) -> string result {
+        action: llm("detect sentiment")
+    }
+}
+system {
+    list topics = ["AI","Robotics","Security"]
+    int i = 0
+    bool negative_found = false
+    for t in topics {
+        string data = run Researcher.gather(t)
+        string sentiment = run Analyzer.sentiment(data)
+        if sentiment == "negative" {
+            negative_found = true
+        }
+        i = i + 1
+    }
+}
+"""
+
+tokens = tokenize(code)
+parser = LL1Parser()
+derivation = parser.parse(tokens, trace=False)
+
+print("Parsing successful.")
+for step in derivation:
+    print(step)
