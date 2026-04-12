@@ -14,7 +14,6 @@ TOKEN_SPECIFICATION = [
     ("NE", r"!="),
     ("GE", r">="),
     ("LE", r"<="),
-
     ("LPAREN", r"\("),
     ("RPAREN", r"\)"),
     ("LBRACE", r"\{"),
@@ -33,7 +32,7 @@ TOKEN_SPECIFICATION = [
     ("LT", r"<"),
 
     ("STRING", r'"([^"\\\n]|\\.)*"'),
-    ("NUM", r"[0-9]+"),
+    ("NUM", r"(0|[1-9][0-9]*)\b"),
 
     ("ID", r"[A-Za-z_][A-Za-z0-9_]*"),
 

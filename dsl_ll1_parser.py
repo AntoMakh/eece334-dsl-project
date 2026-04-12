@@ -19,9 +19,6 @@ class LL1Parser:
         self._build_table()
 
     def _add(self, nonterminal, lookaheads, production):
-        """
-        production is a list of grammar symbols, or ['ε']
-        """
         for la in lookaheads:
             if la in self.table[nonterminal]:
                 old = self.table[nonterminal][la]
@@ -32,6 +29,8 @@ class LL1Parser:
                     )
             self.table[nonterminal][la] = production
 
+    # Antonio: here, we implement the private build_table function, that builds the table entry by entry,
+    # following the algorithm from class.
     def _build_table(self):
         type_first = ["string", "int", "bool", "list"]
         value_first = ["(", "id", "num", "str", "true", "false", "[", "run"]
@@ -208,11 +207,6 @@ class LL1Parser:
         self._add("ValueList'", ["]"], ["ε"])
 
     def _token_type(self, token):
-        """
-        Supports either:
-          - namedtuple/object with .type
-          - tuple like (type, value)
-        """
         if hasattr(token, "type"):
             return token.type
         return token[0]
@@ -228,12 +222,8 @@ class LL1Parser:
     def _token_column(self, token):
         return getattr(token, "column", "?")
 
+    # antonio: main LL(1) parsing algorithm as seen in class
     def parse(self, tokens, trace=False):
-        """
-        tokens must end with EOF token '$'
-        Example token stream element from your lexer:
-          Token(type='agent', value='agent', line=1, column=1)
-        """
         stack = ["$", self.start_symbol]
         index = 0
         derivation = []
