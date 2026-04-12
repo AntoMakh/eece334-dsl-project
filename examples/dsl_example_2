@@ -1,0 +1,27 @@
+agent WebScraper {
+    tool aub_scraper
+    tool llm
+    task scrape(string data, bool silent_scraping) -> string output {
+        action: web_scrape(data, silent_scraping)
+        action: llm("summarize the inputted results of the scrape")
+    }
+}
+
+agent TableFormatter {
+    tool llm
+    task format_table(string data, int number_of_columns) -> string result {
+        action: llm("format the inputted data into a table of {number_of_columns} columns. If unable, return the word "NULL"")
+    }
+}
+
+system {
+    list data = ["Professors", "Majors", "News"]
+    int x = 0
+    for d in data {
+        string output = run WebScraper.scrape(d, false)
+        string table = run TableFormatter(output, 5)
+        if table != "NULL" {
+            x = x + 1
+        }
+    }
+}
