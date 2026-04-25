@@ -1,0 +1,13 @@
+agent A {
+    tool llm
+    task check(string text) -> string result {
+        action: web_search(text)
+    }
+}
+system {
+    int x = "hello"
+    string y = run Missing.check(x)
+    string z = run A.check()
+    string w = run A.check(5)
+    a = 1
+}

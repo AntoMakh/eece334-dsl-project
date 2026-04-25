@@ -34,7 +34,7 @@ class LL1Parser:
     def _build_table(self):
         type_first = ["string", "int", "bool", "list"]
         value_first = ["(", "id", "num", "str", "true", "false", "[", "run"]
-        system_stmt_first = ["string", "int", "bool", "list", "id", "if", "for"]
+        system_stmt_first = ["string", "int", "bool", "list", "id", "if", "for", "run"]
 
         expr_follow = [
             "==", "!=", ">=", "<=", ">", "<",
@@ -105,6 +105,7 @@ class LL1Parser:
         self._add("SystemStmt", ["id"], ["AssgnStmt"])
         self._add("SystemStmt", ["if"], ["IfStmt"])
         self._add("SystemStmt", ["for"], ["ForStmt"])
+        self._add("SystemStmt", ["run"], ["RunStmt"])
 
         # VarStmt
         self._add("VarStmt", type_first, ["Type", "id", "=", "Value"])
